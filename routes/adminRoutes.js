@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { getAllUsers, loginAdmin, getUser, getBalance, storeBox } = require('../controllers/adminController');
+const { getAllUsers, loginAdmin, updateBalance } = require('../controllers/adminController');
 
 
 router.post('/login', loginAdmin);
 router.get('/alluser', getAllUsers);
+router.post('/updatebalance', updateBalance);
 
 // router.post('/12', storeBox);
 // router.post('/balance', getBalance); 

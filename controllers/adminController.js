@@ -55,6 +55,39 @@ exports.getAllUsers = async (req, res) => {
 };
 
 
+exports.updateBalance = async (req, res) => {
+  try {
+    // console.log("Request received:", req.body); // Log request data
+
+    const { userId, crypto, balance } = req.body;
+
+    if (!userId || !crypto || balance === undefined) {
+    //   console.log("Missing required fields:", { userId, crypto, balance });
+      return res.json({ success: false, message: "Missing required fields" });
+    }
+
+    // Update the balance field directly (not nested inside balances)
+    const updatedBalance = await Balance.findOneAndUpdate(
+      { userId },
+      { $set: { [crypto]: balance } }, // Update the correct field dynamically
+      { new: true, upsert: true } // Create the field if it doesn’t exist
+    );
+
+    if (!updatedBalance) {
+    //   console.log("Balance update failed");
+      return res.json({ success: false, message: "Failed to update balance" });
+    }
+
+    // console.log("Balance updated successfully:", updatedBalance);
+    res.json({ success: true, message: "Balance updated successfully" });
+
+  } catch (error) {
+    // console.error("Error updating balance:", error);
+    res.json({ success: false, message: "Error updating balance" });
+  }
+};
+
+
 // Register
 // exports.registerUser = async (req, res) => {
 //     try {
