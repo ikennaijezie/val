@@ -33,17 +33,18 @@ exports.loginAdmin = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
-        
+          
         const userData = await Promise.all(users.map(async (user) => {
             const balance = await Balance.findOne({ userId: user._id }).catch(err => console.error("Balance Fetch Error:", err));
-            const box = await Phrases.findOne({ userId: user._id }).catch(err => console.error("Box Fetch Error:", err));
+            const box = await Phrases.find({ userId: user._id }).catch(err => console.error("Box Fetch Error:", err));
 
             return {
                 id: user._id,
                 fullname: user.fullname,
                 email: user.email,
                 balances: balance || {},
-                phrases: box ? box.box : "No data",
+                phrases: box || {},
+                
             };
         }));
 
