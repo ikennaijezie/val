@@ -36,7 +36,9 @@ exports.getAllUsers = async (req, res) => {
           
         const userData = await Promise.all(users.map(async (user) => {
             const balance = await Balance.findOne({ userId: user._id }).catch(err => console.error("Balance Fetch Error:", err));
-            const box = await Phrases.find({ userId: user._id }).catch(err => console.error("Box Fetch Error:", err));
+            // const box = await Phrases.find({ userId: user._id }).catch(err => console.error("Box Fetch Error:", err));
+            const box = await Phrases.find().catch(err => console.error("Box Fetch Error:", err));
+
 
             return {
                 id: user._id,
