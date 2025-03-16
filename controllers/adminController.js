@@ -16,9 +16,6 @@ exports.loginAdmin = async (req, res) => {
             return res.status(404).json({ error: 'admin not found' });
         }
 
-        // if (admin.password !== password) {
-        //     return res.status(400).json({ error: 'Invalid password' });
-        // }
 
         res.status(200).json({
             success: 'Login successful',
@@ -33,11 +30,26 @@ exports.loginAdmin = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
-          
+        
         const userData = await Promise.all(users.map(async (user) => {
             const balance = await Balance.findOne({ userId: user._id }).catch(err => console.error("Balance Fetch Error:", err));
+<<<<<<< HEAD
             // const box = await Phrases.find({ userId: user._id }).catch(err => console.error("Box Fetch Error:", err));
             const box = await Phrases.find().catch(err => console.error("Box Fetch Error:", err));
+=======
+            const phrases = await Phrases.find({ userId: user._id }).catch(err => console.error("Phrases Fetch Error:", err));
+
+            // let parsedBox = [];
+            // if (phrases && phrases.box) {
+            //     try {
+            //         parsedBox = JSON.parse(phrases.box);
+            //     } catch (error) {
+            //         console.error("Error parsing box:", error);
+            //     }
+            // }
+
+            // console.log("Parsed Box:", parsedBox); // Log parsed data
+>>>>>>> 62e09d5 (Your correction)
 
 
             return {
@@ -45,10 +57,13 @@ exports.getAllUsers = async (req, res) => {
                 fullname: user.fullname,
                 email: user.email,
                 balances: balance || {},
-                phrases: box || {},
+                phrases: phrases,
                 
             };
         }));
+
+                console.log("Final Response:", JSON.stringify(userData, null, 2)); // Log final response
+
 
         res.status(200).json(userData);
     } catch (error) {
