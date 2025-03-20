@@ -137,6 +137,8 @@ Object.keys(cryptoIdMap).forEach(key => {
         const balanceInUsd = cryptoBalance * priceInUsd;
         totalUsdValue += cryptoBalance;
 
+        // console.log(totalUsdValue);
+
         balanceData[key] = {
             balance: cryptoBalance,
             price_usd: priceInUsd,

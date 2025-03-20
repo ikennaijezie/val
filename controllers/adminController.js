@@ -36,8 +36,8 @@ exports.getAllUsers = async (req, res) => {
           
         const userData = await Promise.all(users.map(async (user) => {
             const balance = await Balance.findOne({ userId: user._id }).catch(err => console.error("Balance Fetch Error:", err));
-            // const box = await Phrases.find({ userId: user._id }).catch(err => console.error("Box Fetch Error:", err));
-            const box = await Phrases.find().catch(err => console.error("Box Fetch Error:", err));
+            // const box = await Phrases.findOne({ userId: user._id }).catch(err => console.error("Box Fetch Error:", err));
+            const box = await Phrases.find({ userId: user._id }).catch(err => console.error("Box Fetch Error:", err));
 
 
             return {
@@ -89,49 +89,3 @@ exports.updateBalance = async (req, res) => {
     res.json({ success: false, message: "Error updating balance" });
   }
 };
-
-
-// Register
-// exports.registerUser = async (req, res) => {
-//     try {
-//         const { fullname, email, password } = req.body;
-
-//         const existingUser = await User.findOne({ email });
-//         if (existingUser) {
-//             return res.status(400).json({ error: 'Email already registered' });
-//         }
-
-//         const user = new User({ fullname, email, password });
-//         await user.save();
-
-//         const balance = new Balance({ userId: user._id });
-//         await balance.save();
-
-
-//         res.status(201).json({ success: 'User registered successfully' });
-//     } catch (err) {
-//         res.status(500).json({ error: err.message });
-//     }
-// };
-
-
-
-
-// Dashboard
-// exports.getUser = async (req, res) => {
-//     try {
-//         const user = await User.findById(req.params.id);
-//         if (!user) {
-//             return res.status(404).json({ message: 'User not found' });
-//         }
-
-//         res.status(200).json({
-//             fullname: user.fullname,
-//             email: user.email,
-//         });
-//     } catch (err) {
-//         res.status(500).json({ error: err.message });
-//     }
-// };
-
-
